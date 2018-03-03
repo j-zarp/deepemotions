@@ -1,0 +1,80 @@
+<!doctype html>
+{% load static %}
+<html lang="fr">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>DeepEmotion</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'bootstrap-4.0.0-dist/css/bootstrap.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+
+<body id="body">
+    <div class="container-fluid">
+        <div class="row justify-content-between">
+        	<div class="col-4">
+        		<img src="{% static 'logos/CI4CB_logo.png' %}" class="float-left" alt="Responsive image" width="50%">
+        	</div>
+        	<div class="col-4">
+        		<img src="{% static 'logos/HEIG-VD_Logo-83x25_CMJN-ROUGE.jpg' %}" class="float-right" alt="Responsive image" width="75%">
+        	</div>
+        </div>
+    </div>
+	<div class="jumbotron text-center">
+	    <div class="container">
+	        <h1>DeepEmotion</h1>
+			<h3>Un réseau de neurones capable de lire les émotions sur votre visage</h3>
+			<form id="theForm" method="POST" enctype="multipart/form-data">{% csrf_token %}
+				<input id="id_pic" name="url" type=text value="" autofocus="" hidden>
+				<input id="id_image_data" name="img" type="text" value="" autofocus="" hidden>
+				<input type='submit' value='Take Snapshot' hidden/>
+				<button id="button" onCLick='switchForm();' hidden>Dynamic mode</button>         
+			</form>
+		</div>
+	</div>
+    
+    <div class="container-fluid">
+    	<div class="row align-items-center">
+	    	<div class="col text-center">
+	            <h4>Entrée</h4>
+			    <div id="my_camera" class="d-inline"></div>
+	    	</div>
+	        <div class="col text-center">
+	            <h4>Votre visage laisse transparaître l'émotion</h4>
+				<h2 id="id_emotion">...Cliquez pour le découvrir...</h2>
+				<h5> Certitude de la prédiction:</h5>
+                {% for key, value in emotions.items%}
+                <div class="progress-bar-alt vertical rounded">
+					<div class="progress-track">
+						<div class="progress-fill" style="background: linear-gradient(to bottom, {{value.1}} 0%, {{value.2}} 100%);">
+							<span id="{{value.0}}">0.1%</span>
+						</div>
+					</div>
+					<p class="histlabel">{{key}}</p>
+				</div>
+                {% endfor %}
+	        </div>
+	        
+	        <div class="col text-center" id="results">
+	            <h4>Zones déterminantes *</h4>
+				<img id="t_pic2" src="{% static 'temp2.jpeg' %}" class="float-center" alt="Responsive image" width="75%">
+	        </div>
+	    </div>
+	    <div class="row justify-content-end">
+	    	<p id="heatmaplegend">* plus une zone est rouge, plus celle-ci a été déterminante dans la décision du réseau.</p>
+	    </div>
+    </div>
+    
+    <!-- javascript imports -->
+    <script src="{% static 'js/jquery-3.1.0.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/html2canvas.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/jquery_script.js' %}"></script>
+	<!-- bootstrap specifics -->
+	<script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'bootstrap-4.0.0-dist/js/bootstrap.min.js' %}"></script>
+	<!-- Webcam specific scripts -->
+	<script type="text/javascript" src="{% static 'js/webcam.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/webcam_specifics.js' %}"></script>
+</body>
+</html>
+
